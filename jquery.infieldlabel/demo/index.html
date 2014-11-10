@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>In-Field Labels jQuery Plugin</title>
+	<link rel="stylesheet" href="layout.css" type="text/css" media="all" charset="utf-8" />
+
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="../jquery.infieldlabel.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript" charset="utf-8">
+		$(function(){ $("label").inFieldLabels({
+            pollDuration : 2000
+        }); });
+	</script>
+	<!--[if lte IE 6]>
+		<style type="text/css" media="screen">
+			form label {
+					background: #fff;
+			}
+		</style>
+	<![endif]-->
+</head>
+
+<body>
+	<h1>In-Field Labels jQuery Plugin</h1>
+	<div id="header">
+		<p><strong>License:</strong> <a href="http://docs.jquery.com/License">Same as jQuery (Dual GPL + MIT)</a></p>
+			<p><strong>Author:</strong> <a href="http://pixelgraphics.us/company/">Doug Neiner</a></p>
+			<p><strong>Download:</strong> <a href="http://fuelyourcoding.com/scripts/infield/InFieldLabels.zip">InFieldLabels.zip</a></p>
+			<p><strong>Source:</strong> <a href="http://github.com/dcneiner/In-Field-Labels-jQuery-Plugin/">GitHub</a></p>
+			<p><strong>Size:</strong> Under 1KB Minified and gzipped</p>
+			<p><strong>Overview:</strong><br />
+			This is a simple plugin that turns properly formatted HTML forms into
+			forms with in-field label support. Labels fade when the field is focussed and disappear
+			when text entry begins. Clearing a field and leaving brings back the label.</p>
+			<p><strong>Browser Support:</strong><br />IE6+, WebKit Browsers (Safari, Chrome), Firefox 2+ <small>* IE6 requires a background-color be set on the label to match the background of the field.</small></p>
+			<p><strong>Known Issues:</strong><br />
+			<del>Browser Auto-Complete can cause problems in hiding the labels. Less of an issue for Login Boxes, but much more of an issue with comment forms.</del> (Fixed thanks to @zawaideh!)</p>
+			<p>There may still me a few cases where you will still have an issue with overlapping labels and autocompleted fields. In these cases, you can turn on polling by passing <tt>pollDuration</tt> with a number larger than 0. If you want to turn polling on globally for your usage, change the default: <tt>$.inFieldLabels.defaultOptions.pollDuration = 300</tt>. (Thanks to @fakeartist for the basis for this feature!)</p>
+		</p>
+	</div>
+	<div class="body"><h2>Samples</h2></div>
+	<form action="index.html" method="get" accept-charset="utf-8">
+		<fieldset>
+			<legend>Comment Form</legend>
+			<p>
+				<label for="name">Name</label><br />
+				<input type="text" name="name" value="对对对" id="name" placeholder="">
+			</p>
+			<p>
+				<label for="email">Email</label><br />
+				<input type="text" name="email" value="" id="email" placeholder="">
+			</p>
+			<p>
+				<label for="website">Website</label><br />
+				<input type="text" name="website" value="" id="website" placeholder="">
+			</p>
+			<p>
+				<label for="comment">Comment</label><br />
+				<textarea cols="30" rows="10" name="comment" id="comment" placeholder=""></textarea>
+			</p>
+		</fieldset>
+		<p><input type="submit" value="Continue &rarr;"></p>
+	</form>
+
+	<form action="index.html" method="get" accept-charset="utf-8">
+		<fieldset>
+			<legend>Login Form</legend>
+			<p>
+				<label for="username">Username</label><br />
+				<input type="text" name="username" value="" id="username" placeholder="">
+			</p>
+			<p>
+				<label for="password">Password</label><br />
+				<input type="password" name="password" value="" id="password" placeholder="">
+			</p>
+		</fieldset>
+		<p><input type="submit" value="Continue &rarr;"></p>
+	</form>
+	<div class="body">
+		<h2>Use</h2>
+		<p><strong>HTML</strong>:
+			<pre>
+&lt;p&gt;
+  &lt;label for=&quot;field_id&quot;&gt;Label Text&lt;/label&gt;&lt;br /&gt;
+  &lt;input type=&quot;text&quot; name=&quot;field_id&quot; value=&quot;&quot;
+	id=&quot;field_id&quot;&gt;
+&lt;/p&gt;</pre>
+		</p>
+		<p><strong>CSS</strong>:<br />
+			More CSS is needed to position the label nicely over the input or text area element, but since it all depends on how you have styled those elements, only the bare-bones are listed here. Keep in mind any block element can surround the label and input field. <strong>&lt;p&gt;</strong> is used as an example.
+		<pre>
+form p { position:relative }
+form p br { display: none }
+label  { position:absolute; top:0; left:0; cursor:text}</pre>
+		</p>
+		<p><strong>Javascript</strong>:<br />
+		<pre>
+$(document).ready(function(){
+  $("label").inFieldLabels();
+});</pre>
+
+		</p>
+		<h2>Options</h2>
+		<p>Options can be passed along with the method or set ahead of time for all inFieldLabel controls.</p>
+		<p>To set them ahead of time, use the following syntax:
+			<pre>
+$.inFieldLabels.defaultOptions.optionName = "";</pre>
+		</p>
+		<p>To pass them at call time, use the following syntax:
+			<pre>
+$("label").inFieldLabels({ optionName:value });</pre>
+			</p>
+		<p><tt>fadeOpacity:</tt> <strong>Value between 0.1 and 1.0.</strong><br />When a field is focussed, its label is animated to this opacity. Defaults to <tt>0.5</tt></p>
+		<p><tt>fadeDuration:</tt> <strong>Time in milliseconds</strong><br />When an animation occurs, it uses this setting to determine duration. Defaults to <tt>300</tt></p>
+		<p><tt>pollDuration:</tt> <strong>Time in milliseconds or `0` to disable polling</strong><br />
+		If set to a number greater than zero, the code will check the value of the field at the specified interval until content is detected in this field. Once content is detected or entered, the polling stops for this field.</p>
+		<p><tt>className:</tt> A class to be applied to each label that is enhanced. Set to `false` or `""` and a class will not be set. Defaults to <tt>false</tt></p>
+		<p><tt>enabledInputTypes:</tt> <strong>Array of input types to allow</strong><br />It is not normally desireable for <tt>checkbox</tt> and <tt>radio</tt> input types to have their labels fade out. This allows you to control which input types are allowed. Defaults to: <tt>[ "text", "search", "tel", "url", "email", "password", "textarea" ]</tt></p>
+		<h2>Changelog</h2>
+		<p><strong>Version 0.1.5</strong></p>
+		<ul>
+			<li>Added <tt>bower.json</tt> <em>Special thanks to &#8220;Stephen Way (@stephenway)&#8221;(https://github.com/stephenway) for contributing this file.</em></li>
+			<li>Fixed issue where label could still be selected even with opacity set to 0.0. <em>Special thanks to <a href="https://github.com/clearbucketLabs" title="@clearbucketLabs">Eric Kelly (@clearbucketLabs)</a> for contributing this fix.</em></li>
+		</ul>
+		<p><strong>Version 0.1.4</strong></p>
+		<ul>
+			<li>Add support for a class name to be applied to enhanced label elements. Off by default to not break existing implementations should a existing class name be in use. <em>Special thanks to <a href="https://github.com/bensleveritt" title="@bensleveritt">Benjamin S. Leveritt</a> for contributing this addition.</em></li>
+		</ul>
+		<p><strong>Version 0.1.3</strong></p>
+		<ul>
+			<li>Added support for polling (to aid in pesky autocomplete overlap issues). <em>Special thanks to <a href="https://github.com/fakeartist">@fakeartist</a> for contributing the basis of this solution.</em></li>
+			<li>Added support for `enabledInputTypes` and optimized field filtering. <em>Special thanks to <a href="https://github.com/dabernathy89" title="dabernathy89">Daniel Abernathy</a> for contributing this improvement.</em></li>
+			<li>Fixes to problems with autocomplete on first document load and while inputting data <em>Special thanks to <a href="https://github.com/zawaideh" title="zawaideh">Zaid</a> for contributing this improvement</em></li>
+			<li>Added (anvil):http://anviljs.com build system</li>
+			<li>Switched to uglify for minification (Via anvil.uglify)</li>
+			<li>Added documentation about hiding the <tt>&lt;br&gt;</tt> shown in the examples</li>
+			<li>Fixed issue on id&#8217;s that have special characters in them</li>
+			<li>Added <tt>number</tt> to the default list of input fields allowed</li>
+			<li>Added a show call to the else statement when the plugin spins up that allows the labels to start hidden <em>Note: (Though the developer should only hide them when JS is enabled)</em></li>
+		</ul>
+		<p><strong>Version 0.1.2</strong></p>
+		<ul>
+			<li>Added support for a <tt>paste</tt> event. <em>Special thanks to <a href="http://github.com/esumerfd">Ed Sumerfield (esumerfd)</a> for contributing this improvement.</em></li>
+		</ul>
+		<p><strong>Version 0.1.1</strong></p>
+		<ul>
+			<li>Added support for HTML5 text fields: <tt>search</tt>, <tt>tel</tt>, <tt>url</tt>, <tt>email</tt>. <em>Special thanks to <a href="http://github.com/holizz">Tom Adams (holizz)</a> for contributing this improvement.</em></li>
+		</ul>
+		<p><strong>Version 0.1</strong></p>
+		<ul>
+			<li>Initial Release</li>
+		</ul>
+		<h2>Download</h2>
+		<ul>
+			<li><strong>Source:</strong> <a href="http://github.com/dcneiner/In-Field-Labels-jQuery-Plugin/">Github</a></li>
+			<li><strong>Zip:</strong> <a href="http://fuelyourcoding.com/scripts/infield/InFieldLabels.zip">InFieldLabels.zip</a></li>
+		</ul>
+	</div>
+</body>
+</html>
